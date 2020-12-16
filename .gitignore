@@ -1,0 +1,16 @@
+###folders##
+bonus/
+bin/
+
+###files##
+navy
+a.out
+*.a
+*.o
+unit_tests
+*.gcno
+*.gcda
+*~
+\#*\#
+pos1
+pos2
