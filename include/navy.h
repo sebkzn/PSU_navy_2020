@@ -19,6 +19,8 @@
 #define G (6)
 #define H (7)
 
+#define MIN(val1, val2) (val1 > val2 ? val2 : val1)
+
 typedef struct boat_s {
     size_t length;
     char *front;

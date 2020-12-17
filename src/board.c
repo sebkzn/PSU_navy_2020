@@ -16,16 +16,16 @@ void place_boats(char ***board, boat_t **boats)
         return;
     for (int i = 0; boats[i] != NULL; i++) {
         if (boats[i]->back[0] == boats[i]->front[0]) {
-            pos1 = (boats[i]->back[1] > boats[i]->front[1] ? boats[i]->front[1] - 48: boats[i]->back[1] - 48);
+            pos1 = MIN(boats[i]->front[1] - 48, boats[i]->back[1] - 48);
             pos2 = boats[i]->back[0] - 65;
-            for (size_t k = pos1 - 1; k < boats[i]->length; k++)
+            for (size_t k = pos1 - 1, j = 0; j < boats[i]->length; k++, j++)
                 (*board)[k][pos2] = boats[i]->length + 48;
 
         } else if (boats[i]->back[1] == boats[i]->front[1]) {
-            pos2 = (boats[i]->back[0] > boats[i]->front[0] ? boats[i]->front[0] - 65 : boats[i]->back[0] - 65);
+            pos2 = MIN(boats[i]->front[0] - 65, boats[i]->back[0] - 65);
             pos1 = boats[i]->back[1] - 48;
-            for (size_t k = pos2 - 1; k < boats[i]->length; k++)
-                (*board)[pos1][k] = boats[i]->length + 48;
+            for (size_t k = pos2, j = 0; j < boats[i]->length; k++, j++)
+                (*board)[pos1 - 1][k] = boats[i]->length + 48;
         }
     }
 }
@@ -55,7 +55,7 @@ char **create_board(boat_t **boats)
     for (i = 0; i < 8; i++) {
         board[i] = malloc(sizeof(char) * 8 + 1);
         if (!board[i])
-            return(NULL);
+            return (NULL);
     }
     board[i] = NULL;
     for (int j = 0, i = 0; board[i] != NULL; i++) {
