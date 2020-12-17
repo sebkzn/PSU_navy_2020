@@ -16,7 +16,18 @@ typedef struct boat_s {
     char *back;
 } boat_t;
 
+typedef struct status_s {
+    int received;
+    pid_t pid;
+    int sigone;
+    int sigtwo;
+} status_t;
+
+extern status_t statusinfo;
+
 boat_t **get_positions(char const *filename);
 boat_t **fill_boat_array(char const *filename);
+void create_game(boat_t **boats);
+void connect_game(pid_t pid, boat_t **boats);
 
 #endif /* !NAVY_H_ */

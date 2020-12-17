@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <signal.h>
 
+status_t statusinfo = {0};
+
 static void destruct_game(boat_t **boat_array)
 {
     int i = 0;
@@ -30,10 +32,12 @@ int main(int argc, char * const *argv)
         boat_array = get_positions(argv[1]);
         if (!boat_array)
             return (84);
+        create_game(boat_array);
     } else if (argc == 3) {
         boat_array = get_positions(argv[2]);
         if (!boat_array)
             return (84);
+        connect_game((pid_t)my_getnbr(argv[1]), boat_array);
     }
     destruct_game(boat_array);
     return (0);
