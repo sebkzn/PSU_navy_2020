@@ -10,6 +10,15 @@
 
 #include "my.h"
 
+#define A (0)
+#define B (1)
+#define C (2)
+#define D (3)
+#define E (4)
+#define F (5)
+#define G (6)
+#define H (7)
+
 typedef struct boat_s {
     size_t length;
     char *front;
@@ -29,5 +38,8 @@ boat_t **get_positions(char const *filename);
 boat_t **fill_boat_array(char const *filename);
 void create_game(boat_t **boats);
 void connect_game(pid_t pid, boat_t **boats);
+void display_board(char **board, int enemy);
+char **create_board(boat_t **boats);
+void place_boats(char ***board, boat_t **boats);
 
 #endif /* !NAVY_H_ */
