@@ -7,7 +7,7 @@
 
 #include "navy.h"
 
-void place_boats(char ***board, boat_t **boats)
+static void place_boats(char ***board, boat_t **boats)
 {
     int pos1 = 0;
     int pos2 = 0;
@@ -32,7 +32,7 @@ void place_boats(char ***board, boat_t **boats)
 
 void display_board(char **board, int enemy)
 {
-    my_printf(enemy ? "my positions:\n" : "enemy's positions:\n");
+    my_printf(!enemy ? "my positions:\n" : "enemy's positions:\n");
     my_printf(" |A B C D E F G H\n");
     my_printf("-+---------------\n");
     for (int j = 1, i = 0; board[i] != NULL; i++, j++) {
@@ -43,6 +43,7 @@ void display_board(char **board, int enemy)
         }
         my_putchar('\n');
     }
+    my_putchar('\n');
 }
 
 char **create_board(boat_t **boats)

@@ -42,6 +42,5 @@ void create_game(boat_t **boats);
 void connect_game(pid_t pid, boat_t **boats);
 void display_board(char **board, int enemy);
 char **create_board(boat_t **boats);
-void place_boats(char ***board, boat_t **boats);
 
 #endif /* !NAVY_H_ */
