@@ -9,7 +9,7 @@
 #include "navy.h"
 #include "signal_handler.h"
 
-int check_input(ssize_t rvalue, char *buffer)
+static int check_input(ssize_t rvalue, char *buffer)
 {
     if (!buffer)
         return (0);
@@ -24,11 +24,8 @@ int check_input(ssize_t rvalue, char *buffer)
     return (1);
 }
 
-int receive_attack(pid_t enemypid, char ***board)
+static void get_attack(char *i, char *j)
 {
-    char atk[3] = {0};
-    int i = 'A';
-    int j = '1';
     int k;
 
     my_printf("waiting for enemy's attack...\n");
@@ -36,12 +33,23 @@ int receive_attack(pid_t enemypid, char ***board)
     signal(SIGUSR2, &atk_pos);
     while (!statusinfo.received)
         pause();
-    for (i = 'A', k = 1; k < statusinfo.count; i++, k++);
+    for (*i = 'A', k = 1; k < statusinfo.count; (*i)++, k++);
     statusinfo.received = 0;
     statusinfo.count = 0;
     while (!statusinfo.received)
         pause();
-    for (j = '1', k = 0; k < statusinfo.count; j++, k++);
+    for (*j = '1', k = 0; k < statusinfo.count; (*j)++, k++);
+}
+
+int receive_attack(pid_t enemypid, char ***board)
+{
+    char atk[3] = {0};
+    char i = 'A';
+    char j = '1';
+    char *pi = &i;
+    char *pj = &j;
+
+    get_attack(pi, pj);
     atk[0] = i;
     atk[1] = j;
     if ((*board)[j - 49][i - 65] == '.' || (*board)[j - 49][i - 65] == 'x' ||
@@ -57,7 +65,7 @@ int receive_attack(pid_t enemypid, char ***board)
     return (1);
 }
 
-int send_attack(pid_t enemypid, char *atk)
+static int send_attack(pid_t enemypid, char *atk)
 {
     for (int i = 'A'; i <= atk[0]; i++)
         if (!send_signal(enemypid, SIGUSR1))

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 #define MY_ABS(val) (val < 0 ? -val : val)
+#define MIN(val1, val2) (val1 > val2 ? val2 : val1)
 
 void my_putchar(char c);
 int my_putstr(char const *str);

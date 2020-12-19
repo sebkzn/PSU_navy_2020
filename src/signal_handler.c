@@ -26,7 +26,7 @@ void is_hit(int sig)
     statusinfo.received = 1;
 }
 
-void sig_handler(int sig, siginfo_t *siginfo, void *context)
+static void sig_handler(int sig, siginfo_t *siginfo, void *context)
 {
     if (sig == SIGUSR1) {
         my_printf("successfully connected\n\n");

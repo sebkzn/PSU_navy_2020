@@ -20,7 +20,6 @@ static void place_boats(char ***board, boat_t **boats)
             pos2 = boats[i]->back[0] - 65;
             for (size_t k = pos1 - 1, j = 0; j < boats[i]->length; k++, j++)
                 (*board)[k][pos2] = boats[i]->length + 48;
-
         } else if (boats[i]->back[1] == boats[i]->front[1]) {
             pos2 = MIN(boats[i]->front[0] - 65, boats[i]->back[0] - 65);
             pos1 = boats[i]->back[1] - 48;

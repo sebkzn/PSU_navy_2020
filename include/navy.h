@@ -10,17 +10,6 @@
 
 #include "my.h"
 
-#define A (0)
-#define B (1)
-#define C (2)
-#define D (3)
-#define E (4)
-#define F (5)
-#define G (6)
-#define H (7)
-
-#define MIN(val1, val2) (val1 > val2 ? val2 : val1)
-
 typedef struct boat_s {
     size_t length;
     char *front;
