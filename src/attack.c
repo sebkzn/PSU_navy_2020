@@ -33,12 +33,14 @@ static void get_attack(char *i, char *j)
     signal(SIGUSR2, &atk_pos);
     while (!statusinfo.received)
         pause();
-    for (*i = 'A', k = 1; k < statusinfo.count; (*i)++, k++);
+    for (*i = 'A', k = 0; k < statusinfo.count; (*i)++, k++);
     statusinfo.received = 0;
     statusinfo.count = 0;
     while (!statusinfo.received)
         pause();
     for (*j = '1', k = 0; k < statusinfo.count; (*j)++, k++);
+    statusinfo.received = 0;
+    statusinfo.count = 0;
 }
 
 int receive_attack(pid_t enemypid, char ***board)
@@ -56,7 +58,7 @@ int receive_attack(pid_t enemypid, char ***board)
         (*board)[j - 49][i - 65] == 'o') {
         send_signal(enemypid, SIGUSR2);
         my_printf("%s: missed\n\n", atk);
-        (*board)[j - 49][i - 65] = 'o';
+        (*board)[j - 49][i - 65] = ((*board)[j - 49][i - 65] == 'x' ? 'x':'o');
     } else {
         send_signal(enemypid, SIGUSR1);
         my_printf("%s: hit\n\n", atk);
@@ -67,7 +69,7 @@ int receive_attack(pid_t enemypid, char ***board)
 
 static int send_attack(pid_t enemypid, char *atk)
 {
-    for (int i = 'A'; i <= atk[0]; i++)
+    for (int i = 'A'; i < atk[0]; i++)
         if (!send_signal(enemypid, SIGUSR1))
             return (0);
     if (!send_signal(enemypid, SIGUSR2))
@@ -101,10 +103,12 @@ int get_input(pid_t enemypid, char ***enemy)
         check = check_input(rvalue, buff);
     }
     if (send_attack(enemypid, buff)) {
-        (*enemy)[buff[1] - 49][buff[0] - 65] = (statusinfo.hit ? 'x' : 'o');
-        my_printf((statusinfo.hit ? "%s: hit\n" : "%s: missed\n"), buff);
-        my_putchar('\n');
+        if ((*enemy)[buff[1] - 49][buff[0] - 65] != 'x')
+            (*enemy)[buff[1] - 49][buff[0] - 65] = (statusinfo.hit ? 'x':'o');
+        my_printf((statusinfo.hit ? "%s: hit\n\n" : "%s: missed\n\n"), buff);
+        free(buff);
         return (1);
     }
+    free(buff);
     return (0);
 }
