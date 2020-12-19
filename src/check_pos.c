@@ -76,9 +76,18 @@ static int check_pos_file(char const *filename)
 
 boat_t **get_positions(char const *filename)
 {
+    boat_t **boats = NULL;
+
     if (!filename)
         return (NULL);
     if (!check_pos_file(filename))
         return (NULL);
-    return (fill_boat_array(filename));
+    boats = fill_boat_array(filename);
+    for (int i = 0; boats[i] != NULL; i++)
+        for (int j = i + 1; boats[j] != NULL; j++)
+            if (boats[i]->length == boats[j]->length) {
+                destruct_game(boats);
+                return (NULL);
+            }
+    return (boats);
 }

@@ -16,17 +16,17 @@ static int check_win(char **board, char **enemy_board)
 
     for (int i = 0; board[i] != NULL; i++)
         for (int j = 0; board[i][j]; j++)
-            if (board[i][j] == 'x')
-                my_x += 1;
+            my_x += (board[i][j] == 'x' ? 1 : 0);
     for (int i = 0; enemy_board[i] != NULL; i++)
         for (int j = 0; enemy_board[i][j]; j++)
-            if (enemy_board[i][j] == 'x')
-                enemy_x += 1;
+            enemy_x += (enemy_board[i][j] == 'x' ? 1 : 0);
     if (my_x >= 14) {
         my_printf("Enemy won\n\n");
+        statusinfo.won = 1;
         return (1);
     } else if (enemy_x >= 14) {
         my_printf("I won\n\n");
+        statusinfo.won = 0;
         return (1);
     }
     return (0);
@@ -40,14 +40,12 @@ void game_loop(pid_t enemypid, char **board, char **enemy_board, int turn)
     display_board(enemy_board, 1);
     if (check_win(board, enemy_board))
         return;
-    if (turn) {
-        if (get_input(enemypid, &enemy_board))
-            if (receive_attack(enemypid, &board))
-                game_loop(enemypid, board, enemy_board, 1);
-    } else {
+    if (turn && get_input(enemypid, &enemy_board)) {
         if (receive_attack(enemypid, &board))
-            if (get_input(enemypid, &enemy_board))
-                game_loop(enemypid, board, enemy_board, 0);
+            game_loop(enemypid, board, enemy_board, 1);
+    } else if (!turn && receive_attack(enemypid, &board)) {
+        if (get_input(enemypid, &enemy_board))
+            game_loop(enemypid, board, enemy_board, 0);
     }
 }
 
@@ -79,7 +77,6 @@ void create_game(boat_t **boats)
 
     my_printf("my_pid: %d\n", getpid());
     my_printf("waiting for enemy connection...\n\n");
-
     get_signals(SIGUSR1, SIGUSR2);
     pause();
     if (statusinfo.received) {

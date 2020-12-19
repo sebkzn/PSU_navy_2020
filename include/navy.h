@@ -20,6 +20,7 @@ typedef struct status_s {
     int received;
     pid_t pid;
     int hit;
+    int won;
     int count;
 } status_t;
 
@@ -35,5 +36,6 @@ int get_input(pid_t enemypid, char ***enemy_board);
 int receive_attack(pid_t enemypid, char ***board);
 void is_hit(int sig);
 void atk_pos(int sig);
+void destruct_game(boat_t **boat_array);
 
 #endif /* !NAVY_H_ */
