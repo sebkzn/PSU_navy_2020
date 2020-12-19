@@ -14,5 +14,6 @@
 
 void sig_handler(int sig, siginfo_t *siginfo, void *context);
 int get_signals(int sig_one, int sig_two);
+int send_signal(pid_t pid, int sig);
 
 #endif /* !SIGNAL_HANDLER_H_ */

@@ -9,6 +9,23 @@
 #include "navy.h"
 #include "signal_handler.h"
 
+void atk_pos(int sig)
+{
+    if (sig == SIGUSR1)
+        statusinfo.count += 1;
+    else if (sig == SIGUSR2)
+        statusinfo.received = 1;
+}
+
+void is_hit(int sig)
+{
+    if (sig == SIGUSR1)
+        statusinfo.hit = 1;
+    else if (sig == SIGUSR2)
+        statusinfo.hit = 0;
+    statusinfo.received = 1;
+}
+
 void sig_handler(int sig, siginfo_t *siginfo, void *context)
 {
     if (sig == SIGUSR1) {
@@ -33,4 +50,12 @@ int get_signals(int sig_one, int sig_two)
     else
         return (1);
     return (0);
+}
+
+int send_signal(pid_t pid, int sig)
+{
+    usleep(500);
+    if (kill(pid, sig) < 0)
+        return (0);
+    return (1);
 }

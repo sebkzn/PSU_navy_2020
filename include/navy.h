@@ -30,8 +30,8 @@ typedef struct boat_s {
 typedef struct status_s {
     int received;
     pid_t pid;
-    int sigone;
-    int sigtwo;
+    int hit;
+    int count;
 } status_t;
 
 extern status_t statusinfo;
@@ -42,5 +42,9 @@ void create_game(boat_t **boats);
 void connect_game(pid_t pid, boat_t **boats);
 void display_board(char **board, int enemy);
 char **create_board(boat_t **boats);
+int get_input(pid_t enemypid, char ***enemy_board);
+int receive_attack(pid_t enemypid, char ***board);
+void is_hit(int sig);
+void atk_pos(int sig);
 
 #endif /* !NAVY_H_ */
